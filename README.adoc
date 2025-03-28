@@ -1,1 +1,55 @@
-= Inqwise-Neo4j-client
+= Inqwise Neo4j Client
+
+== Overview
+
+*Inqwise Neo4j Client* is a lightweight wrapper around the Neo4j reactive Java driver, designed for seamless integration with https://vertx.io[Vert.x].  
+It enables fully non-blocking database operations within Vert.x applications using a clean, reactive API.
+
+The library adapts Neo4j’s official reactive driver to work efficiently within the Vert.x event loop.
+
+== Maven
+
+To include this library in your project, add the following dependency:
+
+[source,xml]
+----
+<dependency>
+  <groupId>com.inqwise</groupId>
+  <artifactId>inqwise-neo4j-client</artifactId>
+  <version>1.0.0</version>
+</dependency>
+----
+
+== Usage Example
+
+[source,java]
+----
+import com.inqwise.neo4j.Neo4jClient;
+import com.inqwise.neo4j.Neo4jDriver;
+import com.inqwise.neo4j.Neo4jSession;
+import com.inqwise.neo4j.Neo4jResult;
+
+
+// Initialize Neo4j driver
+Neo4jDriver neo4j = Neo4jClient.create("bolt://localhost:7687", "neo4j", "password");
+
+// Run a simple Cypher query
+Neo4jSession session = neo4j.session();
+session.run("MATCH (p:Person) RETURN p.name")
+  .onComplete(ar -> {
+    if (ar.succeeded()) {
+      Neo4jResult result = ar.result();
+      result.records().handler(record -> {
+        System.out.println("Found person: " + record.get("p.name").asString());
+      });
+    } else {
+      ar.cause().printStackTrace();
+    }
+    session.close(); // Close session when done
+  });
+----
+
+== License
+
+This project is licensed under the MIT License.  
+See the link:LICENSE[LICENSE] file for details.
