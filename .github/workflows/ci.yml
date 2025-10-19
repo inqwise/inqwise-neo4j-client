@@ -32,18 +32,27 @@ jobs:
         path: ~/.m2
         key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
         restore-keys: ${{ runner.os }}-m2
-        
-    - name: Run tests with coverage
-      run: mvn clean test jacoco:report -B
-        
-    - name: Upload coverage reports to Codecov
-      if: matrix.java == '21' && hashFiles('target/site/jacoco/jacoco.xml') != ''
-      uses: codecov/codecov-action@v5
-      with:
-        token: ${{ secrets.CODECOV_TOKEN }}
-        file: ./target/site/jacoco/jacoco.xml
-        fail_ci_if_error: false
-        verbose: true
+
+      - name: Run tests with coverage
+        run: mvn clean test jacoco:report -B
+
+      - name: Verify coverage report exists
+        if: matrix.java == '21'
+        run: |
+          if [ ! -f target/site/jacoco/jacoco.xml ]; then
+            echo "Coverage report target/site/jacoco/jacoco.xml missing"
+            ls -R target || true
+            exit 1
+          fi
+
+      - name: Upload coverage reports to Codecov
+        if: matrix.java == '21'
+        uses: codecov/codecov-action@v5
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          file: ./target/site/jacoco/jacoco.xml
+          fail_ci_if_error: false
+          verbose: true
 
   code-quality:
     name: Code Quality Analysis
