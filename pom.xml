@@ -1,26 +1,23 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-	<prerequisites>
-		<maven>3.0</maven>
-	</prerequisites>
+<?xml version="1.0" encoding="UTF-8" ?>
+<project
+    xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+>
 	<modelVersion>4.0.0</modelVersion>
-	
+
 	<groupId>com.inqwise</groupId>
 	<artifactId>inqwise-neo4j-client</artifactId>
-	<version>1.0.0</version>
-	<description>
+	<version>1.1.0-SNAPSHOT</version>
+	<description>Vert.x friendly Neo4j client utilities.</description>
+	<name>Inqwise Neo4J Client - Neo4J client for Vert.x</name>
 
-    </description>
-	 <name>Inqwise Neo4J Client - Neo4J client for Vert.x</name>
-	
 	<organization>
 		<name>inqwise</name>
 	</organization>
-	
-	<url>https://github.com/inqwise</url>
-	
+
+	<url>https://github.com/inqwise/inqwise-neo4j-client</url>
+
 	<developers>
 		<developer>
 			<id>alex-inqwise</id>
@@ -30,7 +27,7 @@
             <organizationUrl>https://www.inqwise.com</organizationUrl>
 		</developer>
 	</developers>
-	
+
 	<licenses>
         <license>
             <name>MIT License</name>
@@ -40,46 +37,54 @@
     </licenses>
 
 	<scm>
-		<connection>scm:git:git@github.com:inqwise/inqwise-leader.git</connection>
-		<developerConnection>scm:git:git@github.com:inqwise/inqwise-leader.git</developerConnection>
-		<url>git@github.com:inqwise/inqwise-leader.git</url>
+		<connection
+        >scm:git:https://github.com/inqwise/inqwise-neo4j-client.git</connection>
+		<developerConnection
+        >scm:git:https://github.com/inqwise/inqwise-neo4j-client.git</developerConnection>
+		<url>https://github.com/inqwise/inqwise-neo4j-client</url>
+		<tag>HEAD</tag>
 	</scm>
-	
+
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<maven.version>3.6.3</maven.version>
 		<java.version>21</java.version>
-		<maven-compiler-plugin.version>3.11.0</maven-compiler-plugin.version>
-		<junit5.version>5.10.1</junit5.version>
-		<maven-flatten-plugin.version>1.5.0</maven-flatten-plugin.version>
-		<maven.gpg.plugin.version>1.6</maven.gpg.plugin.version>
-		<maven.javadoc.plugin.version>3.5.0</maven.javadoc.plugin.version>
-		
+		<maven-compiler-plugin.version>3.14.1</maven-compiler-plugin.version>
+		<junit5.version>5.11.3</junit5.version>
+		<maven-flatten-plugin.version>1.6.0</maven-flatten-plugin.version>
+		<maven.gpg.plugin.version>3.2.8</maven.gpg.plugin.version>
+		<maven.javadoc.plugin.version>3.12.0</maven.javadoc.plugin.version>
+		<jacoco.plugin.version>0.8.13</jacoco.plugin.version>
 		<log4j2.version>2.25.2</log4j2.version>
-		<vertx.version>5.0.0.CR5</vertx.version>
+		<vertx.version>5.0.4</vertx.version>
+		<guava.version>33.5.0-jre</guava.version>
+		<neo4j.driver.version>5.28.9</neo4j.driver.version>
     </properties>
-	
+
 	<dependencies>
 		<dependency>
 			<groupId>io.vertx</groupId>
 			<artifactId>vertx-core</artifactId>
+			<version>${vertx.version}</version>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>io.vertx</groupId>
 			<artifactId>vertx-reactive-streams</artifactId>
+			<version>${vertx.version}</version>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>com.google.guava</groupId>
 			<artifactId>guava</artifactId>
+			<version>${guava.version}</version>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.neo4j.driver</groupId>
 			<artifactId>neo4j-java-driver</artifactId>
+			<version>${neo4j.driver.version}</version>
 			<scope>provided</scope>
-			<version>5.28.9</version>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.logging.log4j</groupId>
@@ -92,7 +97,8 @@
 		</dependency>
 		<dependency>
 			<groupId>io.vertx</groupId>
-     		<artifactId>vertx-junit5</artifactId>
+      		<artifactId>vertx-junit5</artifactId>
+      		<version>${vertx.version}</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
@@ -105,18 +111,15 @@
 			<artifactId>junit-jupiter-params</artifactId>
 			<scope>test</scope>
 		</dependency>
-		
+		<dependency>
+			<groupId>org.junit.platform</groupId>
+			<artifactId>junit-platform-launcher</artifactId>
+			<scope>test</scope>
+		</dependency>
 	</dependencies>
-	
+
 	<dependencyManagement>
 		<dependencies>
-			<dependency>
-				<groupId>io.vertx</groupId>
-				<artifactId>vertx-stack-depchain</artifactId>
-				<version>${vertx.version}</version>
-				<type>pom</type>
-				<scope>import</scope>
-			</dependency>
 			<dependency>
 				<groupId>org.junit.jupiter</groupId>
 				<artifactId>junit-jupiter-api</artifactId>
@@ -133,6 +136,21 @@
 				<version>${junit5.version}</version>
 			</dependency>
 			<dependency>
+				<groupId>org.junit.platform</groupId>
+				<artifactId>junit-platform-launcher</artifactId>
+				<version>1.11.3</version>
+			</dependency>
+			<dependency>
+				<groupId>org.junit.platform</groupId>
+				<artifactId>junit-platform-engine</artifactId>
+				<version>1.11.3</version>
+			</dependency>
+			<dependency>
+				<groupId>org.junit.platform</groupId>
+				<artifactId>junit-platform-commons</artifactId>
+				<version>1.11.3</version>
+			</dependency>
+			<dependency>
 				<groupId>org.apache.logging.log4j</groupId>
 				<artifactId>log4j-api</artifactId>
 				<version>${log4j2.version}</version>
@@ -144,23 +162,22 @@
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
-	
+
 	<build>
 		<plugins>
-			<!-- Javadocs Plugin -->
-		    <plugin>
-		      <groupId>org.apache.maven.plugins</groupId>
-		      <artifactId>maven-javadoc-plugin</artifactId>
-		      <version>${maven.javadoc.plugin.version}</version>
-		      <executions>
-		        <execution>
-		          <id>attach-javadocs</id>
-		          <goals>
-		            <goal>jar</goal>
-		          </goals>
-		        </execution>
-		      </executions>
-		    </plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<version>${maven.javadoc.plugin.version}</version>
+				<executions>
+					<execution>
+						<id>attach-javadocs</id>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
 			<plugin>
 				<inherited>true</inherited>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -174,20 +191,20 @@
 						</goals>
 						<configuration>
 							<rules>
-								<banDuplicatePomDependencyVersions/>
+								<banDuplicatePomDependencyVersions />
 								<bannedPlugins>
-									<!-- will only display a warning but does not fail the build. -->
 									<level>WARN</level>
 									<excludes>
 										<exclude>org.apache.maven.plugins:maven-verifier-plugin</exclude>
 									</excludes>
-									<message>Please consider using the maven-invoker-plugin (http://maven.apache.org/plugins/maven-invoker-plugin/)!</message>
+									<message
+                                    >Please consider using the maven-invoker-plugin (http://maven.apache.org/plugins/maven-invoker-plugin/)!</message>
 								</bannedPlugins>
 								<requireMavenVersion>
 									<version>${maven.version}</version>
 								</requireMavenVersion>
 								<requireJavaVersion>
-				  					<version>${java.version}</version>
+								  <version>${java.version}</version>
 								</requireJavaVersion>
 							</rules>
 						</configuration>
@@ -195,11 +212,31 @@
 				</executions>
 			</plugin>
 			<plugin>
+				<groupId>org.jacoco</groupId>
+				<artifactId>jacoco-maven-plugin</artifactId>
+				<version>${jacoco.plugin.version}</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>prepare-agent</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>report</id>
+						<phase>test</phase>
+						<goals>
+							<goal>report</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-surefire-plugin</artifactId>
-				<version>3.1.2</version>
+				<version>3.5.4</version>
 				<configuration>
-					<argLine>--illegal-access=permit -Dvertx.logger-delegate-factory-class-name=io.vertx.core.logging.Log4j2LogDelegateFactory</argLine>
+					<argLine
+                    >@{argLine} --illegal-access=permit -Dvertx.logger-delegate-factory-class-name=io.vertx.core.logging.Log4j2LogDelegateFactory</argLine>
 				</configuration>
 				<dependencies>
 					<dependency>
@@ -207,12 +244,17 @@
 						<artifactId>junit-jupiter-engine</artifactId>
 						<version>${junit5.version}</version>
 					</dependency>
+					<dependency>
+						<groupId>org.junit.platform</groupId>
+						<artifactId>junit-platform-launcher</artifactId>
+						<version>1.11.3</version>
+					</dependency>
 				</dependencies>
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-source-plugin</artifactId>
-				<version>3.3.0</version>
+				<version>3.3.1</version>
 				<executions>
 					<execution>
 						<id>attach-sources</id>
@@ -227,10 +269,11 @@
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>${maven-compiler-plugin.version}</version>
 				<configuration>
-					<forceJavacCompilerUse>true</forceJavacCompilerUse>
+					<forceLegacyJavacApi>true</forceLegacyJavacApi>
 					<release>${java.version}</release>
 					<generatedSourcesDirectory>src/main/generated</generatedSourcesDirectory>
-					<generatedTestSourcesDirectory>src/test/generated</generatedTestSourcesDirectory>
+					<generatedTestSourcesDirectory
+                    >src/test/generated</generatedTestSourcesDirectory>
 				</configuration>
 			</plugin>
 			<plugin>
@@ -244,7 +287,6 @@
 								<include>**/surface-reports/**</include>
 								<include>**/target/**</include>
 								<include>**/*.log</include>
-								
 							</includes>
 						</fileset>
 					</filesets>
@@ -256,38 +298,63 @@
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-clean-plugin</artifactId>
-					<version>3.3.1</version>
+					<version>3.5.0</version>
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-deploy-plugin</artifactId>
-					<version>3.1.1</version>
+					<version>3.1.4</version>
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-install-plugin</artifactId>
+					<version>3.1.4</version>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-site-plugin</artifactId>
+					<version>3.21.0</version>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-release-plugin</artifactId>
 					<version>3.1.1</version>
 				</plugin>
 			</plugins>
 		</pluginManagement>
 	</build>
+
+	<distributionManagement>
+		<repository>
+			<id>sonatype-oss-release</id>
+			<name>Central Repository</name>
+			<url>https://central.sonatype.com/api/v1/publisher</url>
+		</repository>
+		<snapshotRepository>
+			<id>sonatype-oss-snapshots</id>
+			<name>Central Repository Snapshots</name>
+			<url>https://central.sonatype.com/api/v1/publisher</url>
+		</snapshotRepository>
+	</distributionManagement>
+
 	<profiles>
 		<profile>
             <id>sonatype-oss-release</id>
             <build>
                 <plugins>
-                    <!-- Central Publishing Plugin -->
                     <plugin>
                         <groupId>org.sonatype.central</groupId>
                         <artifactId>central-publishing-maven-plugin</artifactId>
-                        <version>0.6.0</version>
+                        <version>0.9.0</version>
                         <extensions>true</extensions>
                         <configuration>
-                            <publishingServerId>sonatype-oss-release</publishingServerId>
+                            <publishingServerId
+                            >sonatype-oss-release</publishingServerId>
+                            <autoPublish>true</autoPublish>
+                            <waitUntil>published</waitUntil>
+                            <checksums>required</checksums>
                         </configuration>
                     </plugin>
-
-                    <!-- GPG Plugin Configuration Moved to Profile -->
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-gpg-plugin</artifactId>
@@ -313,4 +380,3 @@
         </profile>
 	</profiles>
 </project>
-
