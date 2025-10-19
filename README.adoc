@@ -1,8 +1,17 @@
+image:https://github.com/inqwise/inqwise-neo4j-client/actions/workflows/ci.yml/badge.svg[CI, link=https://github.com/inqwise/inqwise-neo4j-client/actions/workflows/ci.yml]
+image:https://github.com/inqwise/inqwise-neo4j-client/actions/workflows/release.yml/badge.svg[Release, link=https://github.com/inqwise/inqwise-neo4j-client/actions/workflows/release.yml]
+image:https://github.com/inqwise/inqwise-neo4j-client/actions/workflows/codeql.yml/badge.svg[CodeQL, link=https://github.com/inqwise/inqwise-neo4j-client/actions/workflows/codeql.yml]
+image:https://codecov.io/gh/inqwise/inqwise-neo4j-client/branch/main/graph/badge.svg[Codecov, link=https://codecov.io/gh/inqwise/inqwise-neo4j-client]
+image:https://snyk.io/test/github/inqwise/inqwise-neo4j-client/badge.svg[Snyk Security, link=https://snyk.io/test/github/inqwise/inqwise-neo4j-client]
+image:https://img.shields.io/maven-central/v/com.inqwise/inqwise-neo4j-client.svg?label=Maven%20Central[Maven Central, link=https://search.maven.org/search?q=g:%22com.inqwise%22%20AND%20a:%22inqwise-neo4j-client%22]
+image:https://img.shields.io/badge/License-MIT-yellow.svg[License: MIT, link=https://opensource.org/licenses/MIT]
+image:https://img.shields.io/badge/Java-21%2B-blue.svg[Java Version, link=https://openjdk.java.net/projects/jdk/21/]
+
 = Inqwise Neo4j Client
 
 == Overview
 
-*Inqwise Neo4j Client* is a lightweight wrapper around the Neo4j reactive Java driver, designed for seamless integration with https://vertx.io[Vert.x].  
+*Inqwise Neo4j Client* is a lightweight wrapper around the Neo4j reactive Java driver, designed for seamless integration with https://vertx.io[Vert.x].
 It enables fully non-blocking database operations within Vert.x applications using a clean, reactive API.
 
 The library adapts Neo4j’s official reactive driver to work efficiently within the Vert.x event loop.
@@ -16,7 +25,7 @@ To include this library in your project, add the following dependency:
 <dependency>
   <groupId>com.inqwise</groupId>
   <artifactId>inqwise-neo4j-client</artifactId>
-  <version>1.0.0</version>
+  <version>${latest.version}</version>
 </dependency>
 ----
 
@@ -51,5 +60,5 @@ session.run("MATCH (p:Person) RETURN p.name")
 
 == License
 
-This project is licensed under the MIT License.  
+This project is licensed under the MIT License.
 See the link:LICENSE[LICENSE] file for details.

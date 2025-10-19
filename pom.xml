@@ -58,7 +58,8 @@
 		<log4j2.version>2.25.2</log4j2.version>
 		<vertx.version>5.0.4</vertx.version>
 		<guava.version>33.5.0-jre</guava.version>
-		<neo4j.driver.version>5.28.9</neo4j.driver.version>
+		<junit-platform.version>6.0.0</junit-platform.version>
+		<neo4j.driver.version>6.0.1</neo4j.driver.version>
     </properties>
 
 	<dependencies>
@@ -138,17 +139,17 @@
 			<dependency>
 				<groupId>org.junit.platform</groupId>
 				<artifactId>junit-platform-launcher</artifactId>
-				<version>1.11.3</version>
+				<version>${junit-platform.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.junit.platform</groupId>
 				<artifactId>junit-platform-engine</artifactId>
-				<version>1.11.3</version>
+				<version>${junit-platform.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.junit.platform</groupId>
 				<artifactId>junit-platform-commons</artifactId>
-				<version>1.11.3</version>
+				<version>${junit-platform.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.apache.logging.log4j</groupId>
@@ -247,7 +248,7 @@
 					<dependency>
 						<groupId>org.junit.platform</groupId>
 						<artifactId>junit-platform-launcher</artifactId>
-						<version>1.11.3</version>
+						<version>${junit-platform.version}</version>
 					</dependency>
 				</dependencies>
 			</plugin>
