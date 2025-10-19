@@ -37,7 +37,7 @@ jobs:
       run: mvn clean test jacoco:report -B
         
     - name: Upload coverage reports to Codecov
-      if: matrix.java == '21'
+      if: matrix.java == '21' && hashFiles('target/site/jacoco/jacoco.xml') != ''
       uses: codecov/codecov-action@v5
       with:
         token: ${{ secrets.CODECOV_TOKEN }}
