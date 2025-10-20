@@ -4,7 +4,7 @@
 
 	<groupId>com.inqwise</groupId>
 	<artifactId>inqwise-neo4j-client</artifactId>
-	<version>1.1.6</version>
+	<version>1.1.7-SNAPSHOT</version>
 	<description>Vert.x friendly Neo4j client utilities.</description>
 	<name>Inqwise Neo4J Client - Neo4J client for Vert.x</name>
 
@@ -36,7 +36,7 @@
 		<connection>scm:git:https://github.com/inqwise/inqwise-neo4j-client.git</connection>
 		<developerConnection>scm:git:https://github.com/inqwise/inqwise-neo4j-client.git</developerConnection>
 		<url>https://github.com/inqwise/inqwise-neo4j-client</url>
-		<tag>v1.1.6</tag>
+		<tag>HEAD</tag>
 	</scm>
 
 	<properties>
