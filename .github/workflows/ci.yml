@@ -190,37 +190,9 @@ jobs:
           retention-days: 30
 
   snyk-security:
-    name: Snyk Security Scan (Free Tier)
+    name: Snyk Security Scan (Delegated)
     runs-on: ubuntu-latest
-    env:
-      SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+    if: false
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v5
-
-      - name: Set up JDK 21
-        uses: actions/setup-java@v5
-        with:
-          java-version: 21
-          distribution: 'temurin'
-
-      - name: Cache Maven dependencies
-        uses: actions/cache@v4
-        with:
-          path: ~/.m2
-          key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
-          restore-keys: ${{ runner.os }}-m2
-
-      - name: Run Snyk to check for vulnerabilities (Free)
-        uses: snyk/actions/maven@master
-        continue-on-error: true
-        with:
-          # Free tier settings: public repo gets unlimited scans
-          args: --severity-threshold=medium --file=pom.xml
-
-      - name: Upload Snyk results to GitHub Code Scanning (Free)
-        if: ${{ always() && env.SNYK_TOKEN != '' }}
-        uses: github/codeql-action/upload-sarif@v4
-        with:
-          sarif_file: snyk.sarif
+      - run: echo "Snyk scanning executes via .github/workflows/snyk.yml"
