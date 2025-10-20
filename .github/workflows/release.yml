@@ -58,19 +58,32 @@ jobs:
           MAVEN_PASSWORD: ${{ secrets.SONATYPE_PASSWORD }}
           MAVEN_GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
 
-      - name: Deploy to Maven Central (Tag-based Release)
-        if: github.event_name == 'release'
-        run: mvn clean deploy -P sonatype-oss-release -DskipTests
+      - name: Deploy to Maven Central
+        if: github.event_name == 'workflow_dispatch' || github.event_name == 'release'
+        run: |
+          VERSION_INPUT="${{ github.event.inputs.version }}"
+          if [ "${VERSION_INPUT}" = "" ]; then
+            # Extract version from the tag name when triggered by release event
+            VERSION_INPUT="${{ github.ref_name }}"
+            VERSION_INPUT="${VERSION_INPUT#v}"
+          fi
+
+          mvn clean deploy -P sonatype-oss-release -DskipTests -DreleaseVersion="$VERSION_INPUT"
         env:
           MAVEN_USERNAME: ${{ secrets.SONATYPE_USERNAME }}
           MAVEN_PASSWORD: ${{ secrets.SONATYPE_PASSWORD }}
           MAVEN_GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
 
       - name: Prepare Release Assets
+        if: github.event_name == 'workflow_dispatch' || github.event_name == 'release'
         run: |
           # The Maven release process already built the correct artifacts
           # We need to find them in the Maven local repository after release:perform
           VERSION="${{ github.event.inputs.version }}"
+          if [ "$VERSION" = "" ]; then
+            VERSION="${{ github.ref_name }}"
+            VERSION="${VERSION#v}"
+          fi
           MAVEN_REPO="$HOME/.m2/repository/com/inqwise/neo4j-client/inqwise-neo4j-client/$VERSION"
 
           mkdir -p release-assets
@@ -109,7 +122,7 @@ jobs:
             ## 📦 Maven Central
             ```xml
             <dependency>
-                <groupId>com.inqwise.neo4j-client</groupId>
+                <groupId>com.inqwise</groupId>
                 <artifactId>inqwise-neo4j-client</artifactId>
                 <version>${{ github.event.inputs.version }}</version>
             </dependency>
@@ -138,5 +151,6 @@ jobs:
         uses: softprops/action-gh-release@v2
         with:
           files: release-assets/*
+          overwrite: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
