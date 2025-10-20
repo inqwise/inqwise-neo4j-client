@@ -67,7 +67,7 @@ jobs:
             VERSION_INPUT="${{ github.ref_name }}"
             VERSION_INPUT="${VERSION_INPUT#v}"
           fi
-
+          git checkout -f "v${VERSION_INPUT}"
           mvn clean deploy -P sonatype-oss-release -DskipTests -DreleaseVersion="$VERSION_INPUT"
         env:
           MAVEN_USERNAME: ${{ secrets.SONATYPE_USERNAME }}
@@ -84,6 +84,7 @@ jobs:
             VERSION="${{ github.ref_name }}"
             VERSION="${VERSION#v}"
           fi
+          git checkout -f "v$VERSION"
           MAVEN_REPO="$HOME/.m2/repository/com/inqwise/neo4j-client/inqwise-neo4j-client/$VERSION"
 
           mkdir -p release-assets
