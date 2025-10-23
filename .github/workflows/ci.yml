@@ -24,7 +24,7 @@ jobs:
         uses: actions/setup-java@v5
         with:
           java-version: ${{ matrix.java }}
-          distribution: 'temurin'
+          distribution: "temurin"
 
       - name: Cache Maven dependencies
         uses: actions/cache@v4
@@ -52,7 +52,6 @@ jobs:
           token: ${{ secrets.CODECOV_TOKEN }}
           file: ./target/site/jacoco/jacoco.xml
           fail_ci_if_error: false
-          verbose: true
 
   code-quality:
     name: Code Quality Analysis
@@ -66,7 +65,7 @@ jobs:
         uses: actions/setup-java@v5
         with:
           java-version: 21
-          distribution: 'temurin'
+          distribution: "temurin"
 
       - name: Cache Maven dependencies
         uses: actions/cache@v4
@@ -95,7 +94,7 @@ jobs:
         uses: actions/setup-java@v5
         with:
           java-version: 21
-          distribution: 'temurin'
+          distribution: "temurin"
 
       - name: Cache Maven dependencies
         uses: actions/cache@v4
@@ -152,7 +151,7 @@ jobs:
         uses: actions/setup-java@v5
         with:
           java-version: 21
-          distribution: 'temurin'
+          distribution: "temurin"
 
       - name: Cache Maven dependencies
         uses: actions/cache@v4
