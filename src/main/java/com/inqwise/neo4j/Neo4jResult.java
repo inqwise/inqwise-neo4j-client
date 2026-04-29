@@ -28,6 +28,7 @@ public final class Neo4jResult {
 	 */
 	public ReactiveReadStream<Record> records() {
 		var readStream = ReactiveReadStream.<Record>readStream();
+		readStream.pause();
 		delegate.records().subscribe(readStream);
 		return readStream;
 	}

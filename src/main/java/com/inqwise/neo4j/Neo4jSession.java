@@ -50,6 +50,7 @@ public final class Neo4jSession {
 		Objects.requireNonNull(callback);
 
 		ReactiveReadStream<org.neo4j.driver.Record> read = ReactiveReadStream.readStream();
+		read.pause();
 		delegate.executeRead(
                 tx -> {
                 	return Mono.fromFuture(callback.apply(new Neo4jTransactionContext(tx)).toCompletionStage().toCompletableFuture())
@@ -69,6 +70,7 @@ public final class Neo4jSession {
 		Objects.requireNonNull(callback);
 
 		ReactiveReadStream<org.neo4j.driver.Record> read = ReactiveReadStream.readStream();
+		read.pause();
 		delegate.executeWrite(
                 tx -> {
                 	return Mono.fromFuture(callback.apply(new Neo4jTransactionContext(tx)).toCompletionStage().toCompletableFuture())
