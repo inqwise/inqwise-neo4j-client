@@ -169,6 +169,7 @@ jobs:
             mvn org.owasp:dependency-check-maven:check -B \
               -DfailBuildOnCVSS=7 \
               -Dformat=ALL \
+              -Dodc.outputDirectory=target/dependency-check \
               -DnvdApiKey="$NVD_API_KEY" \
               || echo "Dependency check completed with warnings"
           else
@@ -177,6 +178,7 @@ jobs:
             mvn org.owasp:dependency-check-maven:check -B \
               -DfailBuildOnCVSS=7 \
               -Dformat=ALL \
+              -Dodc.outputDirectory=target/dependency-check \
               || echo "Dependency check completed with warnings"
           fi
 
@@ -185,7 +187,7 @@ jobs:
         uses: actions/upload-artifact@v7
         with:
           name: owasp-dependency-check-report
-          path: target/dependency-check-report.*
+          path: target/dependency-check
           retention-days: 30
 
   snyk-security:
