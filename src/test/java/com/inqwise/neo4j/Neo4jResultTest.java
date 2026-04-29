@@ -5,10 +5,12 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import java.util.List;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Timeout;
 import org.neo4j.driver.Record;
 
 import io.vertx.ext.reactivestreams.ReactiveReadStream;
 
+@Timeout(5)
 class Neo4jResultTest {
 
 	@Test

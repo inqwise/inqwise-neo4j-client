@@ -4,10 +4,12 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Timeout;
 
 import io.vertx.core.Future;
 import reactor.core.publisher.Mono;
 
+@Timeout(5)
 class FutureHelperTest {
 
 	@Test

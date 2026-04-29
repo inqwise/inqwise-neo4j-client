@@ -8,9 +8,11 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.util.Map;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Timeout;
 
 import io.vertx.core.json.JsonObject;
 
+@Timeout(5)
 class Neo4jTransactionTest {
 
 	@Test

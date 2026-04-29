@@ -9,11 +9,13 @@ import java.util.List;
 import java.util.Map;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Timeout;
 import org.neo4j.driver.Record;
 import org.neo4j.driver.TransactionConfig;
 
 import io.vertx.core.json.JsonObject;
 
+@Timeout(5)
 class Neo4jSessionTest {
 
 	@Test
