@@ -23,14 +23,13 @@ public final class Neo4jResult {
 
 	/**
 	 * Returns a read stream emitting each record produced by the query.
+     * Subscription starts when a non-null data handler is attached. Completion
+     * and errors are retained until their respective handlers are attached.
 	 *
 	 * @return a Vert.x reactive read stream of result records
 	 */
 	public ReactiveReadStream<Record> records() {
-		var readStream = ReactiveReadStream.<Record>readStream();
-		readStream.pause();
-		delegate.records().subscribe(readStream);
-		return readStream;
+        return new PublisherReadStream<>(delegate::records);
 	}
 
 	ReactiveResult delegate() {

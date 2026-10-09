@@ -5,7 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Timeout;
 
-@Timeout(5)
+@Timeout(value = 5, threadMode = Timeout.ThreadMode.SEPARATE_THREAD)
 class Neo4jExecutableQueryTest {
 
 	@Test

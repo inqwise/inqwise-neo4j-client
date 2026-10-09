@@ -17,6 +17,7 @@ import org.neo4j.driver.Query;
 import org.neo4j.driver.SessionConfig;
 import org.neo4j.driver.TransactionConfig;
 import org.neo4j.driver.Value;
+import org.neo4j.driver.encryption.BasePropertyEncryption;
 import org.neo4j.driver.reactivestreams.ReactiveResult;
 import org.neo4j.driver.reactivestreams.ReactiveSession;
 import org.neo4j.driver.reactivestreams.ReactiveTransaction;
@@ -388,6 +389,11 @@ final class ReactiveStubs {
 		@Override
 		public CompletionStage<Boolean> supportsMultiDbAsync() {
 			return CompletableFuture.completedFuture(Boolean.FALSE);
+		}
+
+		@Override
+		public <T extends BasePropertyEncryption> T propertyEncryption(Class<T> propertyEncryptionClass) {
+			return null;
 		}
 	}
 }

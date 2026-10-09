@@ -12,7 +12,7 @@ import org.junit.jupiter.api.Timeout;
 
 import io.vertx.core.json.JsonObject;
 
-@Timeout(5)
+@Timeout(value = 5, threadMode = Timeout.ThreadMode.SEPARATE_THREAD)
 class Neo4jTransactionTest {
 
 	@Test

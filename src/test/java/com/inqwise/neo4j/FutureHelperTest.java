@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Timeout;
 import io.vertx.core.Future;
 import reactor.core.publisher.Mono;
 
-@Timeout(5)
+@Timeout(value = 5, threadMode = Timeout.ThreadMode.SEPARATE_THREAD)
 class FutureHelperTest {
 
 	@Test

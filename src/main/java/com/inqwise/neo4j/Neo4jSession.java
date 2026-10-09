@@ -42,6 +42,7 @@ public final class Neo4jSession {
 
 	/**
 	 * Executes a read transaction and streams the resulting records to the returned read stream.
+     * The transaction starts when a non-null data handler is attached.
 	 *
 	 * @param callback the transactional work to perform
 	 * @return a reactive read stream of records
@@ -49,19 +50,16 @@ public final class Neo4jSession {
 	public ReactiveReadStream<org.neo4j.driver.Record> executeRead(Function<Neo4jTransactionContext, Future<Neo4jResult>> callback) {
 		Objects.requireNonNull(callback);
 
-		ReactiveReadStream<org.neo4j.driver.Record> read = ReactiveReadStream.readStream();
-		read.pause();
-		delegate.executeRead(
-                tx -> {
-                	return Mono.fromFuture(callback.apply(new Neo4jTransactionContext(tx)).toCompletionStage().toCompletableFuture())
-                	.flatMapMany(r -> r.delegate().records());
-                }
-        ).subscribe(read);
-		return read;
+        return new PublisherReadStream<>(() -> delegate.executeRead(
+            tx -> Mono.fromFuture(callback.apply(new Neo4jTransactionContext(tx))
+                .toCompletionStage().toCompletableFuture())
+                .flatMapMany(result -> result.delegate().records())
+        ));
 	}
 
 	/**
 	 * Executes a write transaction and returns the produced records.
+     * The transaction starts when a non-null data handler is attached.
 	 *
 	 * @param callback the transactional work to execute
 	 * @return a reactive read stream of records emitted by the transaction
@@ -69,15 +67,11 @@ public final class Neo4jSession {
 	public ReactiveReadStream<org.neo4j.driver.Record> executeWrite(Function<Neo4jTransactionContext, Future<Neo4jResult>> callback) {
 		Objects.requireNonNull(callback);
 
-		ReactiveReadStream<org.neo4j.driver.Record> read = ReactiveReadStream.readStream();
-		read.pause();
-		delegate.executeWrite(
-                tx -> {
-                	return Mono.fromFuture(callback.apply(new Neo4jTransactionContext(tx)).toCompletionStage().toCompletableFuture())
-                	.flatMapMany(r -> r.delegate().records());
-                }
-        ).subscribe(read);
-		return read;
+        return new PublisherReadStream<>(() -> delegate.executeWrite(
+            tx -> Mono.fromFuture(callback.apply(new Neo4jTransactionContext(tx))
+                .toCompletionStage().toCompletableFuture())
+                .flatMapMany(result -> result.delegate().records())
+        ));
 	}
 
 	/**

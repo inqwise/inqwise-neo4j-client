@@ -9,7 +9,7 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Timeout;
 
-@Timeout(5)
+@Timeout(value = 5, threadMode = Timeout.ThreadMode.SEPARATE_THREAD)
 class Neo4jDriverTest {
 
 	@Test

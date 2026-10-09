@@ -5,17 +5,23 @@ import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.time.Duration;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicReference;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Timeout;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.neo4j.driver.Record;
 import org.neo4j.driver.TransactionConfig;
 
+import io.vertx.core.Future;
 import io.vertx.core.json.JsonObject;
+import io.vertx.ext.reactivestreams.ReactiveReadStream;
 
-@Timeout(5)
+@Timeout(value = 5, threadMode = Timeout.ThreadMode.SEPARATE_THREAD)
 class Neo4jSessionTest {
 
 	@Test
@@ -100,4 +106,58 @@ class Neo4jSessionTest {
 		assertEquals(1, records.size());
 	}
 
+    @ParameterizedTest
+    @ValueSource(booleans = {false, true})
+    void transactionStreamStartsWithHandlerOnly(boolean write) {
+        Record record = TestRecords.record("value", 7);
+        var result = ReactiveStubs.result(List.of("value"), List.of(record));
+        var session = new Neo4jSession(new ReactiveStubs.StubReactiveSession(result));
+        ReactiveReadStream<Record> stream = write
+            ? session.executeWrite(ctx -> ctx.run("RETURN 7"))
+            : session.executeRead(ctx -> ctx.run("RETURN 7"));
+        List<Record> records = new ArrayList<>();
+        stream.handler(records::add);
+        assertEquals(List.of(record), records);
+    }
+
+    @ParameterizedTest
+    @ValueSource(booleans = {false, true})
+    void emptyTransactionStreamCompletes(boolean write) {
+        var result = ReactiveStubs.result(List.of(), List.of());
+        var session = new Neo4jSession(new ReactiveStubs.StubReactiveSession(result));
+        ReactiveReadStream<Record> stream = write
+            ? session.executeWrite(ctx -> ctx.run("RETURN 7 LIMIT 0"))
+            : session.executeRead(ctx -> ctx.run("RETURN 7 LIMIT 0"));
+        assertEquals(List.of(), ReadStreamCollector.collect(stream));
+    }
+
+    @ParameterizedTest
+    @ValueSource(booleans = {false, true})
+    void failedTransactionCallbackReachesExceptionHandler(boolean write) {
+        var result = ReactiveStubs.result(List.of(), List.of());
+        var session = new Neo4jSession(new ReactiveStubs.StubReactiveSession(result));
+        RuntimeException failure = new IllegalStateException("Query failed");
+        ReactiveReadStream<Record> stream = write
+            ? session.executeWrite(ctx -> Future.failedFuture(failure))
+            : session.executeRead(ctx -> Future.failedFuture(failure));
+        AtomicReference<Throwable> observed = new AtomicReference<>();
+        stream.handler(record -> {});
+        stream.exceptionHandler(observed::set);
+        assertSame(failure, observed.get());
+    }
+
+    @ParameterizedTest
+    @ValueSource(booleans = {false, true})
+    void thrownTransactionCallbackReachesExceptionHandler(boolean write) {
+        var result = ReactiveStubs.result(List.of(), List.of());
+        var session = new Neo4jSession(new ReactiveStubs.StubReactiveSession(result));
+        RuntimeException failure = new IllegalStateException("Callback failed");
+        ReactiveReadStream<Record> stream = write
+            ? session.executeWrite(ctx -> { throw failure; })
+            : session.executeRead(ctx -> { throw failure; });
+        AtomicReference<Throwable> observed = new AtomicReference<>();
+        stream.exceptionHandler(observed::set);
+        stream.handler(record -> {});
+        assertSame(failure, observed.get());
+    }
 }
